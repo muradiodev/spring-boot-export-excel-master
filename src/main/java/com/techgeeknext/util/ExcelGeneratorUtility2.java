@@ -7,7 +7,9 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ExcelGeneratorUtility2 {
 
@@ -36,47 +38,32 @@ public class ExcelGeneratorUtility2 {
 
             // Employee Datas
             Row row1 = sheet.createRow(3);
-//            Cell cell3 = row1.createCell(0);
-//            cell3.setCellValue("PersonalNr");
-//            cell3.setCellStyle(cellStyle);
-//
-//
-//
-//            Cell cell4 = row1.createCell(1);
-//            cell4.setCellValue("004");
-//            cell4.setCellStyle(cellStyle);
-//
-//            Cell cell5 = row1.createCell(2);
-//            cell5.setCellValue("048");
-//            cell5.setCellStyle(cellStyle);
-//
-//
-//
-//            Cell cell6 = row1.createCell(3);
-//            cell6.setCellValue("014");
-//            cell6.setCellStyle(cellStyle);
-
             List<String> titles = Arrays.asList("Pers. Nr", "Name", "Vorname", "IBAN", "BIC");
 
             //Set data
             int rowNum = 3;
             int cellNum = 0;
-            Users users = new Users();
+            Map<String, String> usersMap = getUsersMap(usr, titles.size());
+
             for (int i = 0; i < titles.size(); i++) {
                 Row empDataRow = sheet.createRow(++rowNum);
 
                 Cell empNameCell = empDataRow.createCell(cellNum);
                 empNameCell.setCellStyle(cellStyle);
                 empNameCell.setCellValue(titles.get(i));
-                personalDetails(users.getPersonal_nr(), empDataRow, cellNum, cellStyle);
-//                personalDetails(users, empDataRow, cellNum, cellStyle);
+                for (int j = 0; j < usr.size(); j++) {
+                    Cell empIdCell = empDataRow.createCell(++cellNum);
+                    empIdCell.setCellStyle(cellStyle);
+                    empIdCell.setCellValue(usersMap.get(String.format("%d_%d",j, i)));
+                }
+//                for (Users users : usr) {
+//                    Cell empIdCell = empDataRow.createCell(++cellNum);
+//                    empIdCell.setCellStyle(cellStyle);
+//                    empIdCell.setCellValue(users.getPersonal_nr());
+//                }
+                cellNum = 0;
 
-
-                i++;
             }
-
-
-            //write output to response
             workbook.write(response.getOutputStream());
 
         } catch (IOException e) {
@@ -84,13 +71,15 @@ public class ExcelGeneratorUtility2 {
         }
     }
 
-//    private static void personalDetails(int personal_nr, Row empDataRow, int cellNum, CellStyle cellStyle) {
-//    }
-
-    public <T extends Users> void personalDetails(T[] user, Row empDataRow, int cellNum, CellStyle cellStyle) {
-        Cell empIdCell = empDataRow.createCell(++cellNum);
-        empIdCell.setCellStyle(cellStyle);
-        empIdCell.setCellValue(user);
-        cellNum = 0;
+    private static Map<String, String> getUsersMap(List<Users> users, int rowCount) {
+        Map<String, String> map = new HashMap<>();
+        int count = 0;
+        for (Users user : users) {
+            map.put(String.format("%d_0",count),user.getPersonal_nr()+"");
+            map.put(String.format("%d_1",count),user.getFirstName());
+            map.put(String.format("%d_2",count),user.getLastName());
+            count++;
+        }
+        return map;
     }
 }
