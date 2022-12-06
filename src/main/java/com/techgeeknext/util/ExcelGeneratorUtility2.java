@@ -62,7 +62,7 @@ public class ExcelGeneratorUtility2 {
             int rowNum = 3;
             int cellNum = 0;
             Users users = new Users();
-            for (int i = 0; i <= titles.size(); i++) {
+            for (int i = 0; i < titles.size(); i++) {
                 Row empDataRow = sheet.createRow(++rowNum);
 
                 Cell empNameCell = empDataRow.createCell(cellNum);
@@ -87,7 +87,7 @@ public class ExcelGeneratorUtility2 {
 //    private static void personalDetails(int personal_nr, Row empDataRow, int cellNum, CellStyle cellStyle) {
 //    }
 
-    public static  void <T extends Users> personalDetails(T[] user, Row empDataRow, int cellNum, CellStyle cellStyle) {
+    public <T extends Users> void personalDetails(T[] user, Row empDataRow, int cellNum, CellStyle cellStyle) {
         Cell empIdCell = empDataRow.createCell(++cellNum);
         empIdCell.setCellStyle(cellStyle);
         empIdCell.setCellValue(user);
