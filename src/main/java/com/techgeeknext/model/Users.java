@@ -1,9 +1,11 @@
 package com.techgeeknext.model;
 
+import com.techgeeknext.enums.MaritalStatus;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import javax.persistence.*;
+import java.math.BigInteger;
 import java.time.LocalDateTime;
 
 @Data
@@ -11,26 +13,33 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Builder
 @Entity
-@Table(name = "users")
+@Table(name = "excel")
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Users {
 
-	@Id
-	int personal_nr;
+    @Id
+    String personal_nr;
 
-	String email;
-	String firstName;
-	String lastName;
-	String roles;
-	String team;
-	String chief;
-	LocalDateTime creationTime;
-	LocalDateTime modification_time;
-	LocalDateTime closeTime;
-	int target_working_hours;
-	String career_stage;
-	int vacation_days;
-	int min_bonus_limit_percent;
-	int overtime_percent;
-	int overtime_leftover;
+    String firstName;
+    String lastName;
+    String bankName;
+    String iban;
+    String bic;
+    @Enumerated(EnumType.STRING)
+    MaritalStatus maritalStatus;
+
+    BigInteger fixedTime;
+    BigInteger projectHours;
+    BigInteger kfz;
+    BigInteger jGehaltsverzicht;
+    BigInteger jSteuer;
+    BigInteger tGehaltsverzicht;
+    BigInteger ticket;
+    BigInteger sales;
+    BigInteger otherIndividual;
+    BigInteger otherPremium;
+    BigInteger travelCosts;
+    BigInteger travelAward;
+    BigInteger bav;
+    BigInteger cfPerformance;
 }
